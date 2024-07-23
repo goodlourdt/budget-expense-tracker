@@ -2,6 +2,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const form = document.getElementById('budget-form');
     const balanceElement = document.getElementById('balance');
     const recordList = document.getElementById('record-list');
+    const clearDataButton = document.getElementById('clear-data');
     let balance = 0;
     let weeklyRecords = [];
 
@@ -29,6 +30,16 @@ document.addEventListener('DOMContentLoaded', () => {
         balanceElement.textContent = `₱${balance.toFixed(2)}`;
         form.reset();
         saveToLocalStorage();
+    });
+
+    clearDataButton.addEventListener('click', () => {
+        if (confirm('Are you sure you want to clear all data?')) {
+            localStorage.removeItem('budgetTrackerData');
+            balance = 0;
+            weeklyRecords = [];
+            balanceElement.textContent = `₱${balance.toFixed(2)}`;
+            displayWeeklyRecords();
+        }
     });
 
     function saveWeeklyRecord(label, amount, date, type) {
