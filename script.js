@@ -23,7 +23,7 @@ document.addEventListener('DOMContentLoaded', () => {
             saveWeeklyRecord(expenseLabel || 'Expense', expense, date, 'expense');
         }
 
-        balanceElement.textContent = `$${balance.toFixed(2)}`;
+        balanceElement.textContent = `₱${balance.toFixed(2)}`;
         form.reset();
     });
 
@@ -43,7 +43,7 @@ document.addEventListener('DOMContentLoaded', () => {
         recordList.innerHTML = '';
         weeklyRecords.forEach(record => {
             const li = document.createElement('li');
-            li.textContent = `${record.date} - ${record.label}: $${record.amount.toFixed(2)}, Balance: $${record.balance.toFixed(2)}`;
+            li.textContent = `${record.date} - ${record.label}: ₱${record.amount.toFixed(2)}, Balance: ₱${record.balance.toFixed(2)}`;
             if (record.type === 'income') {
                 li.classList.add('income');
             } else {
