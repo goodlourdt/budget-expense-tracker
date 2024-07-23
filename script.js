@@ -8,6 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Load data from localStorage
     loadFromLocalStorage();
+
     form.addEventListener('submit', (e) => {
         e.preventDefault();
         const incomeLabel = document.getElementById('income-label').value;
