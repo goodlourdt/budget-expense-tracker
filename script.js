@@ -7,8 +7,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     form.addEventListener('submit', (e) => {
         e.preventDefault();
+        const incomeLabel = document.getElementById('income-label').value;
         const income = parseFloat(document.getElementById('income').value);
+        const expenseLabel = document.getElementById('expense-label').value;
         const expense = parseFloat(document.getElementById('expense').value);
+        const date = document.getElementById('date').value;
 
         if (!isNaN(income)) {
             balance += income;
@@ -19,15 +22,16 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         balanceElement.textContent = `$${balance.toFixed(2)}`;
-        saveWeeklyRecord(income, expense);
+        saveWeeklyRecord(incomeLabel, income, expenseLabel, expense, date);
         form.reset();
     });
 
-    function saveWeeklyRecord(income, expense) {
-        const date = new Date();
+    function saveWeeklyRecord(incomeLabel, income, expenseLabel, expense, date) {
         const record = {
-            date: date.toLocaleDateString(),
+            date: new Date(date).toLocaleDateString(),
+            incomeLabel: incomeLabel || 'Income',
             income: income || 0,
+            expenseLabel: expenseLabel || 'Expense',
             expense: expense || 0,
             balance: balance
         };
@@ -39,7 +43,7 @@ document.addEventListener('DOMContentLoaded', () => {
         recordList.innerHTML = '';
         weeklyRecords.forEach(record => {
             const li = document.createElement('li');
-            li.textContent = `${record.date} - Income: $${record.income.toFixed(2)}, Expense: $${record.expense.toFixed(2)}, Balance: $${record.balance.toFixed(2)}`;
+            li.textContent = `${record.date} - ${record.incomeLabel}: $${record.income.toFixed(2)}, ${record.expenseLabel}: $${record.expense.toFixed(2)}, Balance: $${record.balance.toFixed(2)}`;
             recordList.appendChild(li);
         });
     }
