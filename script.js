@@ -1,51 +1,46 @@
-document.getElementById('expense-form').addEventListener('submit', function(e) {
-    e.preventDefault();
+document.addEventListener('DOMContentLoaded', () => {
+    const form = document.getElementById('budget-form');
+    const balanceElement = document.getElementById('balance');
+    const recordList = document.getElementById('record-list');
+    let balance = 0;
+    let weeklyRecords = [];
 
-    const name = document.getElementById('expense-name').value;
-    const amount = parseFloat(document.getElementById('expense-amount').value);
+    form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const income = parseFloat(document.getElementById('income').value);
+        const expense = parseFloat(document.getElementById('expense').value);
 
-    if (name && amount > 0) {
-        addExpense(name, amount);
-        updateTotal();
-        document.getElementById('expense-form').reset();
-    } else {
-        alert('Please enter a valid name and amount.');
+        if (!isNaN(income)) {
+            balance += income;
+        }
+
+        if (!isNaN(expense)) {
+            balance -= expense;
+        }
+
+        balanceElement.textContent = `$${balance.toFixed(2)}`;
+        saveWeeklyRecord(income, expense);
+        form.reset();
+    });
+
+    function saveWeeklyRecord(income, expense) {
+        const date = new Date();
+        const record = {
+            date: date.toLocaleDateString(),
+            income: income || 0,
+            expense: expense || 0,
+            balance: balance
+        };
+        weeklyRecords.push(record);
+        displayWeeklyRecords();
+    }
+
+    function displayWeeklyRecords() {
+        recordList.innerHTML = '';
+        weeklyRecords.forEach(record => {
+            const li = document.createElement('li');
+            li.textContent = `${record.date} - Income: $${record.income.toFixed(2)}, Expense: $${record.expense.toFixed(2)}, Balance: $${record.balance.toFixed(2)}`;
+            recordList.appendChild(li);
+        });
     }
 });
-
-let expenses = [];
-
-function addExpense(name, amount) {
-    const expense = {
-        id: Date.now(),
-        name: name,
-        amount: amount
-    };
-    expenses.push(expense);
-    renderExpenses();
-}
-
-function renderExpenses() {
-    const expenseList = document.getElementById('expense-list');
-    expenseList.innerHTML = '';
-
-    expenses.forEach(expense => {
-        const li = document.createElement('li');
-        li.innerHTML = `
-            ${expense.name} - $${expense.amount.toFixed(2)}
-            <button onclick="removeExpense(${expense.id})">Remove</button>
-        `;
-        expenseList.appendChild(li);
-    });
-}
-
-function removeExpense(id) {
-    expenses = expenses.filter(expense => expense.id !== id);
-    renderExpenses();
-    updateTotal();
-}
-
-function updateTotal() {
-    const totalAmount = expenses.reduce((total, expense) => total + expense.amount, 0);
-    document.getElementById('total-amount').textContent = totalAmount.toFixed(2);
-}
