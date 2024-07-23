@@ -5,6 +5,9 @@ document.addEventListener('DOMContentLoaded', () => {
     let balance = 0;
     let weeklyRecords = [];
 
+    // Load data from localStorage
+    loadFromLocalStorage();
+
     form.addEventListener('submit', (e) => {
         e.preventDefault();
         const incomeLabel = document.getElementById('income-label').value;
@@ -25,6 +28,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         balanceElement.textContent = `₱${balance.toFixed(2)}`;
         form.reset();
+        saveToLocalStorage();
     });
 
     function saveWeeklyRecord(label, amount, date, type) {
@@ -51,5 +55,23 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             recordList.appendChild(li);
         });
+    }
+
+    function saveToLocalStorage() {
+        const data = {
+            balance: balance,
+            weeklyRecords: weeklyRecords
+        };
+        localStorage.setItem('budgetTrackerData', JSON.stringify(data));
+    }
+
+    function loadFromLocalStorage() {
+        const data = JSON.parse(localStorage.getItem('budgetTrackerData'));
+        if (data) {
+            balance = data.balance;
+            weeklyRecords = data.weeklyRecords;
+            balanceElement.textContent = `₱${balance.toFixed(2)}`;
+            displayWeeklyRecords();
+        }
     }
 });
