@@ -13,26 +13,26 @@ document.addEventListener('DOMContentLoaded', () => {
         const expense = parseFloat(document.getElementById('expense').value);
         const date = document.getElementById('date').value;
 
-        if (!isNaN(income)) {
+        if (!isNaN(income) && income > 0) {
             balance += income;
+            saveWeeklyRecord(incomeLabel || 'Income', income, date, 'income');
         }
 
-        if (!isNaN(expense)) {
+        if (!isNaN(expense) && expense > 0) {
             balance -= expense;
+            saveWeeklyRecord(expenseLabel || 'Expense', expense, date, 'expense');
         }
 
         balanceElement.textContent = `$${balance.toFixed(2)}`;
-        saveWeeklyRecord(incomeLabel, income, expenseLabel, expense, date);
         form.reset();
     });
 
-    function saveWeeklyRecord(incomeLabel, income, expenseLabel, expense, date) {
+    function saveWeeklyRecord(label, amount, date, type) {
         const record = {
             date: new Date(date).toLocaleDateString(),
-            incomeLabel: incomeLabel || 'Income',
-            income: income || 0,
-            expenseLabel: expenseLabel || 'Expense',
-            expense: expense || 0,
+            label: label,
+            amount: amount,
+            type: type,
             balance: balance
         };
         weeklyRecords.push(record);
@@ -43,7 +43,12 @@ document.addEventListener('DOMContentLoaded', () => {
         recordList.innerHTML = '';
         weeklyRecords.forEach(record => {
             const li = document.createElement('li');
-            li.textContent = `${record.date} - ${record.incomeLabel}: $${record.income.toFixed(2)}, ${record.expenseLabel}: $${record.expense.toFixed(2)}, Balance: $${record.balance.toFixed(2)}`;
+            li.textContent = `${record.date} - ${record.label}: $${record.amount.toFixed(2)}, Balance: $${record.balance.toFixed(2)}`;
+            if (record.type === 'income') {
+                li.classList.add('income');
+            } else {
+                li.classList.add('expense');
+            }
             recordList.appendChild(li);
         });
     }
