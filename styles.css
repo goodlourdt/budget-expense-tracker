@@ -82,3 +82,11 @@ button:hover {
 #record-list li.expense {
     color: red;
 }
+button#clear-data {
+    background-color: #dc3545; /* Red color for the clear button */
+    margin-top: 10px;
+}
+
+button#clear-data:hover {
+    background-color: #c82333;
+}
