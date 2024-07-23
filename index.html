@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Weekly Budget Tracker</title>
+    <title>Personal Budget Tracker</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -32,16 +32,11 @@
                     <input type="date" id="date" name="date" required>
                 </div>
                 <button type="submit">Add to Budget</button>
+                <button type="button" id="clear-data">Clear Data</button>
             </form>
             <div class="balance">
                 <h2>Balance: <span id="balance">₱0.00</span></h2>
             </div>
         </div>
         <div class="weekly-records">
-            <h2>Weekly Records</h2>
-            <ul id="record-list"></ul>
-        </div>
-    </div>
-    <script src="script.js"></script>
-</body>
-</html>
+            <h2>Weekly Record
